@@ -1,7 +1,7 @@
 <?php
 namespace sailabs;
 
-use sailabs/SimpleRest;
+use sailabs\SimpleRest;
 
 class SendSMS
 {
@@ -11,6 +11,9 @@ class SendSMS
 
     public $simpleRest;
 
+    /**
+     * @param $authkey
+     */
     public function __construct($authkey)
     {
         $this->authkey = $authkey;

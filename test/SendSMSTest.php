@@ -5,7 +5,8 @@ class SimpleRestTest extends PHPUnit_Framework_TestCase
 {
     public function testSendSMS()
     {
-        $sendSMS = new SendSMS( /* AUTH KEY */);
+        /* Visit http://saiashirwad.in to generate your Auth Key  */
+        $sendSMS = new SendSMS('XYZ' /* AUTH KEY */);
         $sendSMS->sendSMS('MOBILE_NUMBER', 'MESSAGE');
     }
 }
