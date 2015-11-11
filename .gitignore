@@ -1,0 +1,11 @@
+.phpintel
+.project
+.buildpath
+.settings/*
+.*~
+output/*
+docs/api/*
+vendor/*
+!vendor/README
+composer.lock
+*~

@@ -1,0 +1,27 @@
+{
+	"name" : "sailabs/sendsms",
+	"type" : "library",
+	"description" : "Send SMS using Sai Ashirwad Bulk SMS Service",
+	"keywords" : ["send", "sms", "bulk", "free for student package"],
+	"homepage" : "http://saiashirwad.in",
+	"license" : "MIT",
+	"authors" : [
+		{
+			"name" : "Rohan Rajan Sakhale",
+			"email" : "rs@saiashirwad.com",
+			"homepage" : "http://saiashirwad.com"
+		}
+	],
+	"autoload" : {
+		"psr-0" : {
+			"sai\\" : "src"
+		}
+	},
+	"require" : {
+		"php" : ">=5.3",
+		"sailabs/simplerest": "^1.0"
+	},
+    "require-dev": {
+        "phpunit/phpunit": "^4.6"
+    }
+}
