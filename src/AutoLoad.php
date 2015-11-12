@@ -1,10 +1,14 @@
 <?php
 spl_autoload_register(
     function ($classname) {
-        $classpath = SAI_SENDSMS_PATH . 'src' . DS . $classname . '.php';
+        $foldersToCheckIn = ['src', 'test'];
+        foreach ($foldersToCheckIn as $folderName) {
+            $classpath = SAI_SENDSMS_PATH . $folderName . DS . $classname . '.php';
 
-        if (file_exists($classpath)) {
-            require_once $classpath;
+            if (file_exists($classpath)) {
+                require_once $classpath;
+                break;
+            }
         }
     }
 );

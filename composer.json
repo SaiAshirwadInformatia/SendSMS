@@ -19,7 +19,7 @@
 	},
 	"require" : {
 		"php" : ">=5.3",
-		"sailabs/simplerest": "^1.0"
+		"sailabs/simplerest": "dev-master"
 	},
     "require-dev": {
         "phpunit/phpunit": "^4.6"
