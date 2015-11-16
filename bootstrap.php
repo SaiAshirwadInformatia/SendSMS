@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * Bootstrapper for SendSMS Service
@@ -42,6 +41,9 @@ ini_set("zlib.output_compression", "On");
  * if (function_exists('ob_start')) { ob_start('ob_gzhandler'); }
  */
 
+/**
+ *     Load Third Party Classes
+ */
 if (file_exists('vendor' . DS . 'autoload.php')) {
     require_once 'vendor/autoload.php';
 }
