@@ -1,5 +1,5 @@
 {
-	"name" : "sailabs/sendsms",
+	"name" : "saiashirwadinformatia/sendsms",
 	"type" : "library",
 	"description" : "Send SMS using Sai Ashirwad Bulk SMS Service",
 	"keywords" : ["send", "sms", "bulk", "free for student package"],

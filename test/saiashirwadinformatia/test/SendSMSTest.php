@@ -1,7 +1,7 @@
 <?php
-namespace sailabs\test;
+namespace saiashirwadinformatia\test;
 
-use sailabs\SendSMS;
+use saiashirwadinformatia\SendSMS;
 
 class SimpleRestTest extends \PHPUnit_Framework_TestCase
 {

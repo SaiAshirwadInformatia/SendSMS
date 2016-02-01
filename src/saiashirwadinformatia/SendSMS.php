@@ -1,7 +1,7 @@
 <?php
-namespace sailabs;
+namespace saiashirwadinformatia;
 
-use sailabs\SimpleRest;
+use saiashirwadinformatia\SimpleRest;
 
 class SendSMS
 {
