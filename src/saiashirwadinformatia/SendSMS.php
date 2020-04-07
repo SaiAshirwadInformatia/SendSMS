@@ -60,7 +60,8 @@ class SendSMS
     }
 
     /**
-     * @param $route
+     * @param  $route
+     * @return $balance SaiAshirwadInformatia/Models/Balance
      */
     public function checkBalance($route = null)
     {
@@ -73,9 +74,10 @@ class SendSMS
             'response' => 'json',
         ];
 
-        $output = $this->client->get(self::URL . self::BALANCE_CHECK_URL, ['query' => $postData]);
-        $count  = intval($output->getBody()->getContents());
-        return new Balance($count);
+        $output  = $this->client->get(self::URL . self::BALANCE_CHECK_URL, ['query' => $postData]);
+        $count   = intval($output->getBody()->getContents());
+        $balance = new Balance($count);
+        return $balance;
     }
 
     /**
@@ -87,7 +89,7 @@ class SendSMS
      * @param  null           $route
      * @return mixed
      */
-    public function scheduleSMS($mobile, $message, $scheduleAt, $countryCode = null, $senderId = null, $route = null)
+    public function schedule($mobile, $message, $scheduleAt, $countryCode = null, $senderId = null, $route = null)
     {
         $countryCode = $countryCode ?? $this->countryCode;
         $senderId    = $senderId ?? $this->senderId;
@@ -115,7 +117,7 @@ class SendSMS
      * @param  null           $route
      * @return mixed
      */
-    public function sendSMS($mobile, $message, $countryCode = null, $senderId = null, $route = null)
+    public function send($mobile, $message, $countryCode = null, $senderId = null, $route = null)
     {
         $countryCode = $countryCode ?? $this->countryCode;
         $senderId    = $senderId ?? $this->senderId;
