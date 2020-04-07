@@ -1,16 +1,29 @@
 <?php
-namespace saiashirwadinformatia;
+namespace SaiAshirwadInformatia;
 
-use saiashirwadinformatia\SimpleRest;
+use SaiAshirwadInformatia\Models\Balance;
+use SaiAshirwadInformatia\Models\Success;
 
 class SendSMS
 {
+    /**
+     * @var mixed
+     */
     private $authkey;
 
+    /**
+     * @var mixed
+     */
     private $senderId;
 
+    /**
+     * @var mixed
+     */
     private $route;
 
+    /**
+     * @var mixed
+     */
     private $countryCode;
 
     const URL = "http://saiashirwad.in/";
@@ -19,11 +32,16 @@ class SendSMS
 
     const BALANCE_CHECK_URL = 'api/balance.php';
 
-    public $simpleRest;
+    /**
+     * @var mixed
+     */
+    public $client;
 
     const TRANSACTION_ROUTE = 'template';
 
     const PROMOTIONAL_ROUTE = 'default';
+
+    const OTP_ROUTE = 'otp';
 
     /**
      * @param $authkey
@@ -31,25 +49,14 @@ class SendSMS
      * @param $senderId
      * @param $route
      */
-    public function __construct($authkey, $countryCode = '91', $senderId = 'SAIMSG', $route = self::TRANSACTION_ROUTE)
+    public function __construct($authkey, $countryCode = null, $senderId = null, $route = null)
     {
         $this->authkey = $authkey;
-        $this->simpleRest = new SimpleRest();
-        if (!is_null($senderId) and $senderId) {
-            $this->senderId = $senderId;
-        } else {
-            $this->senderId = 'SAIMSG';
-        }
-        if (!is_null($route) and $route) {
-            $this->route = $route;
-        } else {
-            $this->route = self::TRANSACTION_ROUTE;
-        }
-        if (!is_null($countryCode) and $countryCode) {
-            $this->countryCode = $countryCode;
-        } else {
-            $this->countryCode = '91';
-        }
+        $this->client  = new \GuzzleHttp\Client();
+
+        $this->senderId    = $senderId ?? 'SAIMSG';
+        $this->route       = $route ?? self::TRANSACTION_ROUTE;
+        $this->countryCode = $countryCode ?? '91';
     }
 
     /**
@@ -57,17 +64,18 @@ class SendSMS
      */
     public function checkBalance($route = null)
     {
-        if (is_null($route) or !$route) {
-            $route = $this->route;
-        }
+
+        $route = $route ?? $this->route;
+
         $postData = [
             'authkey'  => $this->authkey,
             'type'     => $route,
             'response' => 'json',
         ];
 
-        $output = $this->simpleRest->post(self::URL . self::BALANCE_CHECK_URL, $postData);
-        return $output['response'];
+        $output = $this->client->get(self::URL . self::BALANCE_CHECK_URL, ['query' => $postData]);
+        $count  = intval($output->getBody()->getContents());
+        return new Balance($count);
     }
 
     /**
@@ -81,15 +89,10 @@ class SendSMS
      */
     public function scheduleSMS($mobile, $message, $scheduleAt, $countryCode = null, $senderId = null, $route = null)
     {
-        if (is_null($countryCode) or !$countryCode) {
-            $countryCode = $this->countryCode;
-        }
-        if (is_null($senderId) or !$senderId) {
-            $senderId = $this->senderId;
-        }
-        if (is_null($route) or !$route) {
-            $route = $this->route;
-        }
+        $countryCode = $countryCode ?? $this->countryCode;
+        $senderId    = $senderId ?? $this->senderId;
+        $route       = $route ?? $this->route;
+
         $postData = [
             'authkey'  => $this->authkey,
             'mobiles'  => $mobile,
@@ -100,8 +103,8 @@ class SendSMS
             'route'    => $route,
             'response' => 'json',
         ];
-        $output = $this->simpleRest->post(self::URL . self::SEND_SMS_URL, $postData);
-        return json_decode($output['response'], true);
+        $output = $this->client->post(self::URL . self::SEND_SMS_URL, ['form_params' => $postData]);
+        return json_decode($output['response']);
     }
 
     /**
@@ -114,15 +117,10 @@ class SendSMS
      */
     public function sendSMS($mobile, $message, $countryCode = null, $senderId = null, $route = null)
     {
-        if (is_null($countryCode) or !$countryCode) {
-            $countryCode = $this->countryCode;
-        }
-        if (is_null($senderId) or !$senderId) {
-            $senderId = $this->senderId;
-        }
-        if (is_null($route) or !$route) {
-            $route = $this->route;
-        }
+        $countryCode = $countryCode ?? $this->countryCode;
+        $senderId    = $senderId ?? $this->senderId;
+        $route       = $route ?? $this->route;
+
         $postData = [
             'authkey'  => $this->authkey,
             'mobiles'  => $mobile,
@@ -132,8 +130,10 @@ class SendSMS
             'route'    => $route,
             'response' => 'json',
         ];
-        $output = $this->simpleRest->post(self::URL . self::SEND_SMS_URL, $postData);
-        return json_decode($output['response'], true);
+        $output   = $this->client->post(self::URL . self::SEND_SMS_URL, ['form_params' => $postData]);
+        $response = json_decode($output->getBody()->getContents());
+        $success  = new Success($response->type, $response->message);
+        return $success;
     }
 
     /**
@@ -143,7 +143,7 @@ class SendSMS
      * @param  null           $senderId
      * @return mixed
      */
-    public function sendPromotionalSMS($mobile, $message, $countryCode = null, $senderId = null)
+    public function sendPromotional($mobile, $message, $countryCode = null, $senderId = null)
     {
         return $this->sendSMS($mobile, $message, $senderId, $countryCode, self::PROMOTIONAL_ROUTE);
     }
@@ -155,7 +155,7 @@ class SendSMS
      * @param  null           $senderId
      * @return mixed
      */
-    public function sendTransactionalSMS($mobile, $message, $countryCode = null, $senderId = null)
+    public function sendTransactional($mobile, $message, $countryCode = null, $senderId = null)
     {
         return $this->sendSMS($mobile, $message, $senderId, $countryCode, self::TRANSACTION_ROUTE);
     }

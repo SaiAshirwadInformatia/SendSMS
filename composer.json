@@ -1,27 +1,43 @@
 {
-	"name" : "saiashirwadinformatia/sendsms",
-	"type" : "library",
-	"description" : "Send SMS using Sai Ashirwad Bulk SMS Service",
-	"keywords" : ["send", "sms", "bulk", "free for student package"],
-	"homepage" : "http://saiashirwad.in",
-	"license" : "MIT",
-	"authors" : [
+	"name": "saiashirwadinformatia/sendsms",
+	"type": "library",
+	"description": "Send SMS using Sai Ashirwad Bulk SMS Service",
+	"keywords": [
+		"send",
+		"sms",
+		"bulk",
+		"free for student package"
+	],
+	"homepage": "http://saiashirwad.in",
+	"license": "MIT",
+	"authors": [
 		{
-			"name" : "Rohan Rajan Sakhale",
-			"email" : "rs@saiashirwad.com",
-			"homepage" : "http://saiashirwad.com"
+			"name": "Rohan Sakhale",
+			"email": "rs@saiashirwad.com",
+			"homepage": "https://saiashirwad.com"
+		},
+		{
+			"name": "Chaitali Sakhale",
+			"email": "cs@saiashirwad.com",
+			"homepage": "https://saiashirwad.com"
 		}
 	],
-	"autoload" : {
-		"psr-0" : {
-			"saiashirwadinformatia\\" : "src"
-		}
+	"require": {
+		"php": "^7.2.5",
+		"guzzlehttp/guzzle": "^6.5",
+		"phpunit/phpunit": "^9.1"
 	},
-	"require" : {
-		"php" : ">=5.3",
-		"saiashirwadinformatia/simplerest": "^1.0"
+	"require-dev": {
+		"symfony/var-dumper": "^5.0"
 	},
-    "require-dev": {
-        "phpunit/phpunit": "^4.6"
-    }
+	"autoload": {
+		"classmap": [
+			"src/"
+		]
+	},
+	"autoload-dev": {
+		"classmap": [
+			"tests/"
+		]
+	}
 }
